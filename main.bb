@@ -24,6 +24,8 @@ For x = 0 To length - 1
         For z = 0 To depth - 1
             cube = CreateCube()
             PositionEntity cube, x * 3, y * 3, z * 3
+            EntityAlpha cube, 0.7 ; Make it kinda transparent
+            EntityColor cube, Rnd(0, 255), Rnd(0, 255), Rnd(0, 255) ; Random color
         Next
     Next
 Next
@@ -48,9 +50,9 @@ While Not KeyDown(1)
 
     ; Camera speed adjustment (Hold Ctrl to move faster)
     If KeyDown(29) ; Left Ctrl
-        cam_speed = 0.01
+        cam_speed = 0.05
     Else
-        cam_speed = 0.001
+        cam_speed = 0.01
     EndIf
 
     ; WASD + Space/Shift camera movement
@@ -61,10 +63,13 @@ While Not KeyDown(1)
     If KeyDown(57) Then cam_y = cam_y + cam_speed  ; Space
     If KeyDown(42) Then cam_y = cam_y - cam_speed  ; Left Shift
 
-    If KeyDown(73) Then cam_x = cam_x - cam_speed  ; I
-    If KeyDown(74) Then cam_x = cam_x + cam_speed  ; K
-    If KeyDown(76) Then cam_z = cam_z + cam_speed  ; L
-    If KeyDown(72) Then cam_z = cam_z - cam_speed  ; J
+    If KeyDown(23) Then TurnEntity camera, -1, 0, 0  ; I
+    If KeyDown(37) Then TurnEntity camera, 1, 0, 0   ; K
+    If KeyDown(36) Then TurnEntity camera, 0, 1, 0   ; J
+    If KeyDown(38) Then TurnEntity camera, 0, -1, 0  ; L
+
+    If KeyDown(22) Then TurnEntity camera, 0, 0, 1   ; U
+    If KeyDown(24) Then TurnEntity camera, 0, 0, -1  ; O
 
 Wend
 
