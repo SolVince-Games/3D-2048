@@ -1,63 +1,71 @@
-Graphics3D 653, 653,32,2
+Graphics3D 653, 653, 32, 2
 SetBuffer BackBuffer()
 
+; Create Camera
 camera = CreateCamera()
 
+; Camera position and speed
 cam_x# = 0.0
 cam_y# = 0.0
 cam_z# = 0.0
-
 cam_speed# = 0.001
 
+; Cube Grid Dimensions
+length = 4
+width = 4
+depth = 4
+
+; Create light
 light = CreateLight()
 
-; Make Shapes
-cylinder = CreateCylinder(32)
-PositionEntity cylinder,-2,0,5
+; Create cubes in a 3D grid with 1-unit gaps (cube is 2x2x2, so 3 units apart)
+For x = 0 To length - 1
+    For y = 0 To width - 1
+        For z = 0 To depth - 1
+            cube = CreateCube()
+            PositionEntity cube, x * 3, y * 3, z * 3
+        Next
+    Next
+Next
 
-cube = CreateCube()
-PositionEntity cube,3,0,5
-
-sphere = CreateSphere(32)
-PositionEntity sphere,0,0,5
-; Make Shapes
-
+; Main Loop
 While Not KeyDown(1)
 
-PositionEntity camera,cam_x,cam_y,cam_z
+    ; Position the camera
+    PositionEntity camera, cam_x, cam_y, cam_z
 
-RenderWorld
-Flip
+    ; Render the scene
+    RenderWorld
 
-If KeyDown(29);Ctrl
-    cam_speed = 0.01
-Else
-    cam_speed = 0.001
-EndIf
+    ; Debug: Display key codes
+    For i = 1 To 255
+        If KeyDown(i)
+            Text 100, 100, "Key pressed: " + i
+        EndIf
+    Next
 
-If KeyDown(17);W
-    cam_z = cam_z + cam_speed
-EndIf
+    Flip
 
-If KeyDown(31);S
-    cam_z = cam_z - cam_speed
-EndIf
+    ; Camera speed adjustment (Hold Ctrl to move faster)
+    If KeyDown(29) ; Left Ctrl
+        cam_speed = 0.01
+    Else
+        cam_speed = 0.001
+    EndIf
 
-If KeyDown(30);A
-    cam_x = cam_x - cam_speed
-EndIf
+    ; WASD + Space/Shift camera movement
+    If KeyDown(17) Then cam_z = cam_z + cam_speed  ; W
+    If KeyDown(31) Then cam_z = cam_z - cam_speed  ; S
+    If KeyDown(30) Then cam_x = cam_x - cam_speed  ; A
+    If KeyDown(32) Then cam_x = cam_x + cam_speed  ; D
+    If KeyDown(57) Then cam_y = cam_y + cam_speed  ; Space
+    If KeyDown(42) Then cam_y = cam_y - cam_speed  ; Left Shift
 
-If KeyDown(32);D
-    cam_x = cam_x + cam_speed
-EndIf
-
-If KeyDown(57);Space
-    cam_y = cam_y + cam_speed
-EndIf
-
-If KeyDown(42);Shift
-    cam_y = cam_y - cam_speed
-EndIf
+    If KeyDown(73) Then cam_x = cam_x - cam_speed  ; I
+    If KeyDown(74) Then cam_x = cam_x + cam_speed  ; K
+    If KeyDown(76) Then cam_z = cam_z + cam_speed  ; L
+    If KeyDown(72) Then cam_z = cam_z - cam_speed  ; J
 
 Wend
+
 End
